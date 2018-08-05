@@ -17,14 +17,18 @@ import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
-    @Autowired
-    private OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
+
+    private final ProductService productService;
+
+    private final OrderItemRepository orderItemRepository;
 
     @Autowired
-    private ProductService productService;
-
-    @Autowired
-    private OrderItemRepository orderItemRepository;
+    public OrderService(OrderRepository orderRepository, ProductService productService, OrderItemRepository orderItemRepository) {
+        this.orderRepository = orderRepository;
+        this.productService = productService;
+        this.orderItemRepository = orderItemRepository;
+    }
 
     public List<Order> getAll() {
         return orderRepository.findAll();

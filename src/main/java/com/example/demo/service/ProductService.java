@@ -11,8 +11,12 @@ import java.util.List;
 @Service
 public class ProductService {
 
+    private final ProductRepository productRepository;
+
     @Autowired
-    private ProductRepository productRepository;
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
 
     public Product get(Long id) {
@@ -20,8 +24,7 @@ public class ProductService {
     }
 
     public Product add(Product product) {
-        productRepository.save(product);
-        return product;
+        return productRepository.save(product);
     }
 
     public List<Product> getAll() {
