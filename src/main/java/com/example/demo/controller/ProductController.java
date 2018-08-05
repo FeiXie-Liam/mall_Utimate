@@ -34,6 +34,11 @@ public class ProductController {
         return ResponseEntity.created(URI.create("products/" + productService.add(product).getId())).build();
     }
 
+    @GetMapping
+    public ResponseEntity getAll() {
+        return ResponseEntity.ok(productService.getAll());
+    }
+
     @ExceptionHandler(ProductNotFound.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     private void productNotFoundHandler() {
