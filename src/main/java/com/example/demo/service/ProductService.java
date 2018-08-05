@@ -14,7 +14,11 @@ public class ProductService {
 
 
     public Product get(Long id) {
-        Product product = productRepository.findById(id).orElseThrow(ProductNotFound::new);
+        return productRepository.findById(id).orElseThrow(ProductNotFound::new);
+    }
+
+    public Product add(Product product) {
+        productRepository.save(product);
         return product;
     }
 }
