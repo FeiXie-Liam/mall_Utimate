@@ -9,6 +9,7 @@ import com.example.demo.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,6 +55,12 @@ public class OrderController {
     public ResponseEntity addOrderItem(@PathVariable Long orderId, @PathVariable Long productId) {
         orderService.addOrderItem(orderId, productId);
         return ResponseEntity.created(URI.create("/orders" + orderId + "/orderItems/" + productId)).build();
+    }
+
+    @DeleteMapping("/{orderId}/orderItems/{productId}")
+    public ResponseEntity deleteOrderItem(@PathVariable Long orderId, @PathVariable Long productId) {
+        orderService.deleteOrderItem(orderId, productId);
+        return ResponseEntity.noContent().build();
     }
 
     @ExceptionHandler(OrderNotFound.class)

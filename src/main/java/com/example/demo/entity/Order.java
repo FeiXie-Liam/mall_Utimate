@@ -19,7 +19,7 @@ public class Order {
 
     @OneToMany(mappedBy = "order",
             targetEntity = OrderItem.class,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+            cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
     private List<OrderItem> orderItems;
 
