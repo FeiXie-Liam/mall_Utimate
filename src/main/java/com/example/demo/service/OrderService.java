@@ -53,4 +53,24 @@ public class OrderService {
         order.setOrderItems(newOrderItems);
         orderRepository.save(order);
     }
+
+    public void addOrderItem(Long orderId, Long productId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFound::new);
+        List<OrderItem> orderItems = order.getOrderItems();
+        if (orderItems.stream()
+                .filter(orderItem -> orderItem.getProduct().getId().equals(productId))
+                .collect(Collectors.toList()).size() == 0) {
+            orderItems.add(new OrderItem(productService.get(productId), 1, order));
+        } else {
+            List<OrderItem> newOrderItems = orderItems.stream().map(orderItem -> {
+                if (orderItem.getProduct().getId().equals(productId)) {
+                    orderItem.setProductCount(orderItem.getProductCount() + 1);
+                }
+                return orderItem;
+            }).collect(Collectors.toList());
+            orderItems = newOrderItems;
+        }
+        order.setOrderItems(orderItems);
+        orderRepository.save(order);
+    }
 }

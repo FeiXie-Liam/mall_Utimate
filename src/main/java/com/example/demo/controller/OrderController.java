@@ -50,6 +50,12 @@ public class OrderController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/{orderId}/orderItems/{productId}")
+    public ResponseEntity addOrderItem(@PathVariable Long orderId, @PathVariable Long productId) {
+        orderService.addOrderItem(orderId, productId);
+        return ResponseEntity.created(URI.create("/orders" + orderId + "/orderItems/" + productId)).build();
+    }
+
     @ExceptionHandler(OrderNotFound.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     private void orderNotFoundHandler() {
