@@ -34,4 +34,14 @@ public class ProductService {
     public void remove(Long id) {
         productRepository.deleteById(id);
     }
+
+    public void update(Long id, Product product) {
+        Product selectedProduct = productRepository.findById(id).orElseThrow(ProductNotFound::new);
+        selectedProduct.setImageUrl(product.getImageUrl());
+        selectedProduct.setUnit(product.getUnit());
+        selectedProduct.setPrice(product.getPrice());
+        selectedProduct.setName(product.getName());
+
+        productRepository.save(selectedProduct);
+    }
 }

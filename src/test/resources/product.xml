@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <product id="1" name="Mr" image_url="Phillip" unit="元" price="4"/>
+    <product id="2" name="Mr1" image_url="Fred" unit="元" price="2"/>
+</dataset>

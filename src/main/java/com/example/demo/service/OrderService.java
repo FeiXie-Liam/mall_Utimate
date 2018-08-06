@@ -5,6 +5,7 @@ import com.example.demo.entity.OrderItem;
 import com.example.demo.entity.Product;
 import com.example.demo.entity.request.OrderInfoRequest;
 import com.example.demo.entity.request.OrderItemInfoRequest;
+import com.example.demo.entity.response.OrderResponse;
 import com.example.demo.exception.OrderNotFound;
 import com.example.demo.repository.OrderItemRepository;
 import com.example.demo.repository.OrderRepository;
@@ -30,12 +31,14 @@ public class OrderService {
         this.orderItemRepository = orderItemRepository;
     }
 
-    public List<Order> getAll() {
-        return orderRepository.findAll();
+    public List<OrderResponse> getAll() {
+        List<OrderResponse> orderResponses = new ArrayList<>();
+        orderRepository.findAll().forEach(order -> orderResponses.add(new OrderResponse(order)));
+        return orderResponses;
     }
 
-    public Order get(Long id) {
-        return orderRepository.findById(id).orElseThrow(OrderNotFound::new);
+    public OrderResponse get(Long id) {
+        return new OrderResponse(orderRepository.findById(id).orElseThrow(OrderNotFound::new));
     }
 
     public Order add(OrderInfoRequest orderInfoRequest) {
@@ -82,17 +85,17 @@ public class OrderService {
         orderRepository.save(order);
     }
 
-    public void deleteOrderItem(Long orderId, Long productId) {
+    public void deleteOrderItem(Long orderId, Long orderItemId) {
         Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFound::new);
         List<OrderItem> orderItems = order.getOrderItems();
         List<OrderItem> selectedOrderItem = orderItems.stream()
-                .filter(orderItem -> orderItem.getProduct().getId().equals(productId))
+                .filter(orderItem -> orderItem.getId().equals(orderItemId))
                 .collect(Collectors.toList());
         if (selectedOrderItem.size() != 0) {
             orderItems.remove(selectedOrderItem.get(0));
             orderItemRepository.delete(selectedOrderItem.get(0));
         }
-        order.setOrderItems(orderItems);
-        orderRepository.save(order);
+//        order.setOrderItems(orderItems);
+//        orderRepository.save(order);
     }
 }

@@ -57,9 +57,9 @@ public class OrderController {
         return ResponseEntity.created(URI.create("/orders" + orderId + "/orderItems/" + productId)).build();
     }
 
-    @DeleteMapping("/{orderId}/orderItems/{productId}")
-    public ResponseEntity deleteOrderItem(@PathVariable Long orderId, @PathVariable Long productId) {
-        orderService.deleteOrderItem(orderId, productId);
+    @DeleteMapping("/{orderId}/orderItems/{orderItemId}")
+    public ResponseEntity deleteOrderItem(@PathVariable Long orderId, @PathVariable Long orderItemId) {
+        orderService.deleteOrderItem(orderId, orderItemId);
         return ResponseEntity.noContent().build();
     }
 

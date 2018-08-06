@@ -4,6 +4,7 @@ import com.example.demo.entity.Order;
 import com.example.demo.entity.OrderItem;
 import com.example.demo.entity.Product;
 import com.example.demo.entity.request.OrderInfoRequest;
+import com.example.demo.entity.response.OrderResponse;
 import com.example.demo.exception.OrderNotFound;
 import com.example.demo.repository.OrderItemRepository;
 import com.example.demo.repository.OrderRepository;
@@ -75,13 +76,13 @@ public class OrderServiceTest {
                 .willReturn(orders);
 
         //when
-        Order actual = orderService.getAll().get(0);
+        OrderResponse actual = orderService.getAll().get(0);
 
         //then
-        assertThat(actual.getId()).isEqualTo(1L);
-        assertThat(actual.getOrderItems().get(0).getProductCount()).isEqualTo(2);
-        assertThat(actual.getOrderItems().size()).isEqualTo(1);
-        assertThat(actual.getOrderItems().get(0).getProduct().getName()).isEqualTo("测试");
+        assertThat(actual.getOrderItemResponses().get(0).getUnit()).isEqualTo("个");
+        assertThat(actual.getOrderItemResponses().get(0).getCount()).isEqualTo(2);
+        assertThat(actual.getOrderItemResponses().get(0).getPrice()).isEqualTo(20D);
+        assertThat(actual.getOrderItemResponses().get(0).getName()).isEqualTo("测试");
 
     }
 
@@ -114,13 +115,13 @@ public class OrderServiceTest {
                 .willReturn(optOrder);
 
         //when
-        Order actual = orderService.get(1L);
+        OrderResponse actual = orderService.getAll().get(0);
 
         //then
-        assertThat(actual.getId()).isEqualTo(1L);
-        assertThat(actual.getOrderItems().get(0).getProductCount()).isEqualTo(2);
-        assertThat(actual.getOrderItems().size()).isEqualTo(1);
-        assertThat(actual.getOrderItems().get(0).getProduct().getName()).isEqualTo("测试");
+        assertThat(actual.getOrderItemResponses().get(0).getUnit()).isEqualTo("个");
+        assertThat(actual.getOrderItemResponses().get(0).getCount()).isEqualTo(2);
+        assertThat(actual.getOrderItemResponses().get(0).getPrice()).isEqualTo(20D);
+        assertThat(actual.getOrderItemResponses().get(0).getName()).isEqualTo("测试");
     }
 
     @Test(expected = OrderNotFound.class)
@@ -132,7 +133,7 @@ public class OrderServiceTest {
                 .willReturn(optOrder);
 
         //when
-        Order actual = orderService.get(1L);
+        orderService.get(1L);
 
         //then
     }
