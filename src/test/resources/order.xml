@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <order id="1"/>
+    <order id="2"/>
+    <order_item id="1" product_id="1" order_id="1" count="3"/>
+    <order_item id="2" product_id="2" order_id="1" count="2"/>
+    <order_item id="3" product_id="1" order_id="2" count="6"/>
+    <order_item id="4" product_id="2" order_id="2" count="4"/>
+</dataset>

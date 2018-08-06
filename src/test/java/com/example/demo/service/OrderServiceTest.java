@@ -4,7 +4,7 @@ import com.example.demo.entity.Order;
 import com.example.demo.entity.OrderItem;
 import com.example.demo.entity.Product;
 import com.example.demo.entity.request.OrderInfoRequest;
-import com.example.demo.entity.response.OrderResponse;
+import com.example.demo.entity.request.OrderItemInfoRequest;
 import com.example.demo.exception.OrderNotFound;
 import com.example.demo.repository.OrderItemRepository;
 import com.example.demo.repository.OrderRepository;
@@ -76,18 +76,18 @@ public class OrderServiceTest {
                 .willReturn(orders);
 
         //when
-        OrderResponse actual = orderService.getAll().get(0);
+        Order actual = orderService.getAll().get(0);
 
         //then
-        assertThat(actual.getOrderItemResponses().get(0).getUnit()).isEqualTo("个");
-        assertThat(actual.getOrderItemResponses().get(0).getCount()).isEqualTo(2);
-        assertThat(actual.getOrderItemResponses().get(0).getPrice()).isEqualTo(20D);
-        assertThat(actual.getOrderItemResponses().get(0).getName()).isEqualTo("测试");
+        assertThat(actual.getId()).isEqualTo(1L);
+        assertThat(actual.getOrderItems().get(0).getProductCount()).isEqualTo(2);
+        assertThat(actual.getOrderItems().get(0).getProduct().getName()).isEqualTo("测试");
+        assertThat(actual.getOrderItems().get(0).getProduct().getPrice()).isEqualTo(20D);
 
     }
 
     @Test
-    public void should_get_product_given_id() {
+    public void should_get_order_given_id(){
         //given
         Product product = Product.builder()
                 .id(10L)
@@ -108,20 +108,17 @@ public class OrderServiceTest {
                 .build();
 
         orderItem.setOrder(order);
-
         Optional<Order> optOrder = Optional.of(order);
-
         given(orderRepository.findById(anyLong()))
                 .willReturn(optOrder);
-
         //when
-        OrderResponse actual = orderService.getAll().get(0);
-
+        Order actual = orderService.get(1L);
         //then
-        assertThat(actual.getOrderItemResponses().get(0).getUnit()).isEqualTo("个");
-        assertThat(actual.getOrderItemResponses().get(0).getCount()).isEqualTo(2);
-        assertThat(actual.getOrderItemResponses().get(0).getPrice()).isEqualTo(20D);
-        assertThat(actual.getOrderItemResponses().get(0).getName()).isEqualTo("测试");
+        assertThat(actual.getId()).isEqualTo(1L);
+        assertThat(actual.getOrderItems().get(0).getProductCount()).isEqualTo(2);
+        assertThat(actual.getOrderItems().get(0).getProduct().getName()).isEqualTo("测试");
+        assertThat(actual.getOrderItems().get(0).getProduct().getPrice()).isEqualTo(20D);
+
     }
 
     @Test(expected = OrderNotFound.class)
@@ -138,6 +135,7 @@ public class OrderServiceTest {
         //then
     }
 
+
     @Test
     public void should_add_order_to_repository_given_order() {
         //given
@@ -148,7 +146,6 @@ public class OrderServiceTest {
                 .price(20D)
                 .unit("个")
                 .build();
-
         Optional<Product> optProduct = Optional.of(product);
 
         OrderItem orderItem = new OrderItem(1L, product, 2, new Order());
@@ -163,32 +160,38 @@ public class OrderServiceTest {
 
         orderItem.setOrder(order);
 
-        given(productRepository.findById(anyLong()))
-                .willReturn(optProduct);
-//
-        given(orderRepository.save(any(Order.class)))
+//        given(productRepository.findById(anyLong()))
+//                .willReturn(optProduct);
+
+        given(orderRepository.save(any()))
                 .willReturn(order);
 
         //when
-        Order actual = orderService.add(new OrderInfoRequest());
+        OrderInfoRequest orderInfoRequest = new OrderInfoRequest();
+        orderInfoRequest.setOrderItemInfos(new ArrayList<>());
+        Order actual = orderService.add(orderInfoRequest);
 
         //then
         assertThat(actual.getId()).isEqualTo(1L);
         assertThat(actual.getOrderItems().get(0).getProductCount()).isEqualTo(2);
-        assertThat(actual.getOrderItems().size()).isEqualTo(1);
         assertThat(actual.getOrderItems().get(0).getProduct().getName()).isEqualTo("测试");
-
+        assertThat(actual.getOrderItems().get(0).getProduct().getPrice()).isEqualTo(20D);
     }
 
-    @Test
-    public void update() {
-    }
+    @Test(expected = OrderNotFound.class)
+    public void should_throw_exception_when_update_order_id_not_exist(){
+        //given
 
-    @Test
-    public void addOrderItem() {
-    }
+        OrderItemInfoRequest orderItemInfoRequest = new OrderItemInfoRequest();
+        orderItemInfoRequest.setProductCount(2);
+        orderItemInfoRequest.setProductId(1L);
 
-    @Test
-    public void deleteOrderItem() {
+        Optional<Order> emptyOrder = Optional.empty();
+
+        given(orderRepository.findById(anyLong()))
+                .willReturn(emptyOrder);
+
+        //when
+        orderService.update(10L, orderItemInfoRequest);
     }
 }

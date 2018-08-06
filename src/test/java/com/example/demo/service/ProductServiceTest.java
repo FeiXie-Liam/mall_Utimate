@@ -125,8 +125,4 @@ public class ProductServiceTest {
         assertThat(actual.get(0).getPrice()).isEqualTo(20D);
         assertThat(actual.get(0).getUnit()).isEqualTo("个");
     }
-
-    @Test
-    public void remove() {
-    }
 }

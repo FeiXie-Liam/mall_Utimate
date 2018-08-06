@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.entity.Order;
 import com.example.demo.entity.request.OrderInfoRequest;
 import com.example.demo.entity.request.OrderItemInfoRequest;
+import com.example.demo.entity.response.OrderResponse;
 import com.example.demo.exception.OrderNotFound;
 import com.example.demo.exception.ProductNotFound;
 import com.example.demo.service.OrderService;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @RestController
@@ -31,12 +34,16 @@ public class OrderController {
 
     @GetMapping
     public ResponseEntity getAll() {
-        return ResponseEntity.ok(orderService.getAll());
+        List<Order> allOrders = orderService.getAll();
+        List<OrderResponse> orderResponses = new ArrayList<>();
+        allOrders.forEach(order -> orderResponses.add(new OrderResponse(order)));
+
+        return ResponseEntity.ok(orderResponses);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable Long id) {
-        return ResponseEntity.ok(orderService.get(id));
+        return ResponseEntity.ok(new OrderResponse(orderService.get(id)));
     }
 
     @PostMapping

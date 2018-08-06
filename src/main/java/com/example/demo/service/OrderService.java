@@ -31,14 +31,12 @@ public class OrderService {
         this.orderItemRepository = orderItemRepository;
     }
 
-    public List<OrderResponse> getAll() {
-        List<OrderResponse> orderResponses = new ArrayList<>();
-        orderRepository.findAll().forEach(order -> orderResponses.add(new OrderResponse(order)));
-        return orderResponses;
+    public List<Order> getAll() {
+        return orderRepository.findAll();
     }
 
-    public OrderResponse get(Long id) {
-        return new OrderResponse(orderRepository.findById(id).orElseThrow(OrderNotFound::new));
+    public Order get(Long id) {
+        return orderRepository.findById(id).orElseThrow(OrderNotFound::new);
     }
 
     public Order add(OrderInfoRequest orderInfoRequest) {
@@ -50,8 +48,8 @@ public class OrderService {
             orderItems.add(curItem);
         });
         order.setOrderItems(orderItems);
-        orderRepository.save(order);
-        return order;
+
+        return orderRepository.save(order);
     }
 
     public void update(Long id, OrderItemInfoRequest orderItemInfo) {
