@@ -1,0 +1,29 @@
+order:
+  - id: 1
+
+order_item:
+  - id: 1
+    product_id: 1
+    order_id: 1
+    count: 2
+  - id: 2
+    product_id: 2
+    order_id: 1
+    count: 1
+
+product:
+  - id: 1
+    name: "苹果"
+    image_url: "./resources/images"
+    unit: "个"
+    price: 5
+  - id: 2
+    name: "笔记本电脑"
+    image_url: "./resources/images"
+    unit: "台"
+    price: 7000
+  - id: 3
+    name: "电视机"
+    image_url: "./resources/images"
+    unit: "台"
+    price: 4000

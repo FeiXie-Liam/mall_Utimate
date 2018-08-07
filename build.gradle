@@ -32,6 +32,9 @@ dependencies {
     compile('org.projectlombok:lombok')
     runtime('mysql:mysql-connector-java')
     testCompile('org.dbunit:dbunit:2.5.0')
+    testCompile('com.github.database-rider:rider-spring:1.2.9') {
+        exclude group: 'org.slf4j', module: 'slf4j-simple'
+    }
     testCompile('com.github.springtestdbunit:spring-test-dbunit:1.2.0')
     testCompile('io.rest-assured:rest-assured:3.1.0')
     testCompile('org.springframework.boot:spring-boot-starter-test')

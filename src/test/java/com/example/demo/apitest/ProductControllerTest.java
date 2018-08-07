@@ -1,11 +1,12 @@
 package com.example.demo.apitest;
 
-import com.example.demo.entity  .Product;
+import com.example.demo.entity.Product;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import io.restassured.http.ContentType;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -85,7 +86,7 @@ public class ProductControllerTest {
     @Test
     @DatabaseSetup("classpath:/product.xml")
     @ExpectedDatabase(assertionMode = DatabaseAssertionMode.NON_STRICT, value = "classpath:/expectedUpdateProduct.xml")
-    public void should_update_product_when_call_update(){
+    public void should_update_product_when_call_update() {
         Product product = new Product();
         product.setName("updateTest");
         product.setImageUrl("./image");
